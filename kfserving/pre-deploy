@@ -2,3 +2,11 @@
 
 echo "Overriding manifests in kustomize directory"
 cp -fRv overrides/. kustomize
+if ! kubectl -n "$NAMESPACE" get secret "kfserving-webhook-server-cert" > /dev/null; then
+    echo "Generating self-signed certifiate"
+    mkdir -p ".generated"
+    bin/self-signed-ca.sh \
+        --namespace "$NAMESPACE" \
+        --service "katib-controller" \
+        --output-dir ".generated"
+fi

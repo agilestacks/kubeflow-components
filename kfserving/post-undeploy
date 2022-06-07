@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Overriding manifests in kustomize directory"
+cp -fRv overrides/. kustomize
+
+kubectl -n "$NAMESPACE" delete secret --ignore-not-found "kfserving-webhook-server-cert"
+rm -rf ".generated"
