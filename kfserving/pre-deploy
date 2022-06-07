@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Overriding manifests in kustomize directory"
+cp -fRv overrides/. kustomize
