@@ -1,0 +1,15 @@
+#!/bin/sh -e
+# shellcheck disable=SC2086
+verb="$(basename "$0")"
+files download-tar "$URL" "notebook-controller/kustomize" --tar-subpath "apps/jupyter/jupyter-web-app/upstream"
+files download-tar "$URL" "jupyter-web-app/kustomize" --tar-subpath "apps/jupyter/notebook-controller/upstream"
+
+(
+  cd "notebook-controller"
+  hub ext component kustomize $verb
+)
+
+(
+  cd "jupyter-web-app"
+  hub ext component kustomize $verb
+)

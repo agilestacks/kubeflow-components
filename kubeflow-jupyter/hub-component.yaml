@@ -1,0 +1,25 @@
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.kubeflow
+  parameters:
+    - name: name
+    - name: namespace
+      env: NAMESPACE
+    - name: version
+      value: v1.5.0
+      env: VERSION
+    - name: tarball
+      value: "https://codeload.github.com/kubeflow/manifests/tar.gz/${component.kubeflow.version}"
+      env: URL      
+- name: component.istio
+  parameters:
+  - name: namespace
+  - name: ingressGateway
+# - name: hub.backup.file
+#   empty: allow
+#   env: BACKUP_FILE
