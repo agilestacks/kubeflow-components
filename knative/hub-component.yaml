@@ -1,0 +1,23 @@
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.knative
+  parameters:
+    # - name: crd
+    #   env: CRD
+    #   value: |
+    #     https://github.com/knative/serving/releases/download/v0.22.1/serving-core.yaml
+    #     https://github.com/knative-sandbox/net-istio/releases/download/v0.22.1/net-istio.yaml
+    - name: version
+      value: v1.5.0
+      env: VERSION
+    - name: kustomize.tarball
+      value: "https://codeload.github.com/kubeflow/manifests/tar.gz/${component.knative.version}"
+      env: HUB_KUSTOMIZE_TARBALL_URL      
+    - name: kustomize.subpath
+      value: common/knative
+      env: HUB_KUSTOMIZE_TARBALL_SUBPATH
