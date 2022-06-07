@@ -1,0 +1,27 @@
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.kubebench
+  parameters:
+    - name: namespace
+      env: NAMESPACE
+    - name: version
+      value: v1.5.0
+      env: VERSION
+    - name: kustomize.tarball
+      value: "https://codeload.github.com/kubeflow/manifests/tar.gz/${component.kubebench.version}"
+      env: HUB_KUSTOMIZE_TARBALL_URL      
+    - name: kustomize.subpath
+      value: apps/kubebench/upstream
+      env: HUB_KUSTOMIZE_TARBALL_SUBPATH      
+# - name: component.istio
+#   parameters:
+#   - name: namespace
+#   - name: ingressGateway
+# - name: hub.backup.file
+#   empty: allow
+#   env: BACKUP_FILE
