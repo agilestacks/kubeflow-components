@@ -6,9 +6,13 @@ verb="$(basename "$0")"
   HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/jupyter/jupyter-web-app/upstream" \
   hub ext component kustomize "$verb"
 )
+pid1=$!
 
 (
   cd "jupyter-web-app"
   HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/jupyter/notebook-controller/upstream" \
   hub ext component kustomize "$verb"
 )
+pid2=$!
+
+wait $pid1 $pid2

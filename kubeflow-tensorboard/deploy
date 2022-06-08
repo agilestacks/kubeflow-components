@@ -6,10 +6,14 @@ verb="$(basename "$0")"
   cd "tensorboard-controller"
   HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/tensorboard/tensorboard-controller/upstream" \
   hub ext component kustomize $verb
-)
+) &
+pid1=$!
 
 (
   cd "tensorboards-web-app"
   HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/tensorboard/tensorboards-web-app/upstream" \
   hub ext component kustomize $verb
-)
+) &
+pid2=$!
+
+wait $pid1 $pid2
