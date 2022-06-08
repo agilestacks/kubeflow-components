@@ -7,14 +7,12 @@ requires:
 parameters:
 - name: component.kubeflow
   parameters:
-    - name: namespace
-      env: NAMESPACE
     - name: version
       value: v1.5.0
       env: VERSION
     - name: tarball
       value: "https://codeload.github.com/kubeflow/manifests/tar.gz/${component.kubeflow.version}"
-      env: URL      
+      env: HUB_KUSTOMIZE_TARBALL_URL      
 # - name: component.istio
 #   parameters:
 #   - name: namespace

@@ -7,8 +7,6 @@ requires:
 parameters:
 - name: component.kubeflow
   parameters:
-    - name: namespace
-      env: NAMESPACE
     - name: version
       value: v1.5.0
       env: VERSION

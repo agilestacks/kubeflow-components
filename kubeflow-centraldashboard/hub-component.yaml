@@ -7,9 +7,6 @@ requires:
 parameters:
 - name: component.kubeflow
   parameters:
-    - name: name
-    - name: namespace
-      env: NAMESPACE
     - name: version
       value: v1.5.0
       env: VERSION
@@ -19,10 +16,3 @@ parameters:
     - name: centraldashboard.kustomize.subpath
       value: apps/centraldashboard/upstream
       env: HUB_KUSTOMIZE_TARBALL_SUBPATH      
-# - name: component.istio
-#   parameters:
-#   - name: namespace
-#   - name: ingressGateway
-# - name: hub.backup.file
-#   empty: allow
-#   env: BACKUP_FILE
