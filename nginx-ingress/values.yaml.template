@@ -1,0 +1,14 @@
+controller:
+  kind: deployment
+  appprotect:
+    ## Enable the App Protect module in the Ingress Controller.
+    enable: false
+  logLevel: 1
+  image:
+    repository: "${component.nginx.image}"
+    tag: "${component.nginx.imageTag}"
+  replicaCount: "${component.nginx.replicaCount}"
+  ingressClass: "${component.ingress.class}"
+  setAsDefaultIngress: false
+  service:
+    type: "${component.nginx.serviceType}" 

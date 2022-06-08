@@ -1,0 +1,47 @@
+---
+version: 1
+kind: component
+
+requires:
+- kubernetes
+- helm
+
+provides:
+- ingress
+
+parameters:
+- name: component.ingress
+  parameters:
+  - name: namespace
+    value: ingress
+    env: NAMESPACE
+  - name: class
+    value: nginx
+- name: component.nginx
+  parameters:
+  - name: replicaCount
+    value: 1
+  - name: serviceType
+    value: LoadBalancer
+  - name: image
+    value: nginx/nginx-ingress
+  - name: imageTag
+    value: 2.2.2
+  - name: helm
+    parameters:
+    - name: chart
+      value: "nginx-ingress"
+      env: HELM_CHART
+    - name: repo
+      value: https://helm.nginx.com/stable
+      env: HELM_REPO
+    - name: version
+      value: 0.13.2
+      env: HELM_CHART_VERSION
+    - name: baseValuesFile
+      value: values.yaml
+      env: CHART_VALUES_FILE
+
+templates:
+  files:
+  - '*.template'
