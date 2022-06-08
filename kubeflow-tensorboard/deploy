@@ -1,15 +1,15 @@
 #!/bin/sh -e
 # shellcheck disable=SC2086
 verb="$(basename "$0")"
-files download-tar "$HUB_KUSTOMIZE_TARBALL_URL" "tensorboard-controller/kustomize" --tar-subpath "apps/tensorboard/tensorboard-controller/upstream"
-files download-tar "$HUB_KUSTOMIZE_TARBALL_URL" "tensorboards-web-app/kustomize" --tar-subpath "apps/tensorboard/tensorboards-web-app/upstream"
 
 (
   cd "tensorboard-controller"
+  HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/tensorboard/tensorboard-controller/upstream" \
   hub ext component kustomize $verb
 )
 
 (
   cd "tensorboards-web-app"
+  HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/tensorboard/tensorboards-web-app/upstream" \
   hub ext component kustomize $verb
 )

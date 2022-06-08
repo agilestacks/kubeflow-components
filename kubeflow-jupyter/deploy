@@ -1,15 +1,14 @@
 #!/bin/sh -e
-# shellcheck disable=SC2086
 verb="$(basename "$0")"
-files download-tar "$HUB_KUSTOMIZE_TARBALL_URL" "notebook-controller/kustomize" --tar-subpath "apps/jupyter/jupyter-web-app/upstream"
-files download-tar "$HUB_KUSTOMIZE_TARBALL_URL" "jupyter-web-app/kustomize" --tar-subpath "apps/jupyter/notebook-controller/upstream"
 
 (
   cd "notebook-controller"
-  hub ext component kustomize $verb
+  HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/jupyter/jupyter-web-app/upstream" \
+  hub ext component kustomize "$verb"
 )
 
 (
   cd "jupyter-web-app"
-  hub ext component kustomize $verb
+  HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/jupyter/notebook-controller/upstream" \
+  hub ext component kustomize "$verb"
 )
