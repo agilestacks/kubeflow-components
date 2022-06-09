@@ -36,7 +36,7 @@ parameters:
       value: https://helm.nginx.com/stable
       env: HELM_REPO
     - name: version
-      value: 0.13.2
+      value: 0.13.1
       env: HELM_CHART_VERSION
     - name: baseValuesFile
       value: values.yaml
