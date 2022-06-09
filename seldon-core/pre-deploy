@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+files download-tar \
+    "https://codeload.github.com/SeldonIO/seldon-core/tar.gz/${HELM_CHART_VERSION}" \
+    "$(pwd)/.kustomize" \
+    --tar-subpath "operator/config"
+
+kubectl="kubectl --context=$HUB_DOMAIN_NAME"
+$kubectl apply --validate=ignore -k ".kustomize/crd"
+cat << EOF | $kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: "$COMPONENT_NAME"
+spec:
+  selector:
+    istio: "$INGRESS_GATEWAY"
+  servers:
+  - hosts: $(echo \""$HOSTS"\" | jq -cM '.|split(" ")')
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+EOF

@@ -1,0 +1,59 @@
+---
+version: 1
+kind: component
+
+requires:
+- kubernetes
+- helm
+
+provides:
+- seldon
+
+lifecycle:
+  verbs:
+  - deploy
+  - undeploy
+
+parameters:
+- name: hub.componentName
+- name: component.seldon
+  parameters:
+  - name: namespace
+    value: seldon-system
+    env: NAMESPACE
+  - name: version
+    value: v1.13.1
+    env: HELM_CHART_VERSION
+  - name: helm
+    parameters:
+    - name: chart
+      value: seldon-core-operator
+      env: HELM_CHART
+    - name: repo
+      value: https://storage.googleapis.com/seldon-charts
+      env: HELM_REPO
+    - name: baseValuesFile
+      value: values.yaml
+      env: CHART_VALUES_FILE    
+
+- name: component.istio
+  parameters:
+  - name: namespace
+    value: istio-system
+  - name: ingressGateway
+    value: istio-ingressgateway
+    env: INGRESS_GATEWAY
+  - name: gateway.name
+    value: "${hub.componentName}"
+  - name: gateway.hosts
+    env: HOSTS
+    value: |
+      ${component.istio.ingressGateway}.${component.istio.namespace}.svc.cluster.local
+
+outputs:
+- name: component.seldon.istioGateway
+  brief: Default istio gateway for seldon deployments
+  value: ${component.seldon.namespace}/${hub.componentName}-gateway
+templates:
+  files:
+  - "*.template"
