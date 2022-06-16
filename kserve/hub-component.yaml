@@ -1,0 +1,26 @@
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.kserve.version
+  value: v0.8.0
+  env: KSERVE_VERSION
+- name: component.kserve.webapp.version
+  value: master
+- name: component.kserve.webapp.kustomize.tarball
+  value: https://codeload.github.com/kserve/models-web-app/tar.gz/${component.kserve.webapp.version}
+  env: KSERVE_WEB_APP_KUSTOMIZE_TARBALL
+
+- name: component.bucket
+  parameters:
+  # - name: host
+  # - name: port
+  # - name: region
+  - name: accessKey
+    empty: allow
+  - name: secretKey
+    empty: allow
+  # - name: name
