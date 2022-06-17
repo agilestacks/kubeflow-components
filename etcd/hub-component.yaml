@@ -1,0 +1,40 @@
+---
+version: 1
+kind: component
+
+requires:
+- kubernetes
+- helm
+
+provides:
+- ingress
+
+parameters:
+- name: component.etcd
+  parameters:
+  - name: namespace
+    env: NAMESPACE
+    value: etcd
+  - name: version
+    value: 3.5.4
+  - name: rootPassword
+  - name: helm
+    parameters:
+    - name: chart
+      value: "etcd"
+      env: HELM_CHART
+    - name: repo
+      value: https://charts.bitnami.com/bitnami
+      env: HELM_REPO
+    - name: version
+      value: 8.3.0
+      env: HELM_CHART_VERSION
+    - name: baseValuesFile
+      value: values.yaml
+      env: CHART_VALUES_FILE
+- name: component.storage-class.name
+  empty: allow
+
+templates:
+  files:
+  - '*.template'

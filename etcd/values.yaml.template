@@ -1,0 +1,11 @@
+# see: https://github.com/bitnami/charts/blob/master/bitnami/etcd/values.yaml
+auth:
+  rbac:
+    rootPassword: "${component.etcd.rootPassword}"
+
+global:
+  storageClass: "${component.storage-class.name}"
+
+persistence:
+  storageClass: "${component.storage-class.name}"
+  size: 8Gi
