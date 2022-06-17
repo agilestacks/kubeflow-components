@@ -1,11 +1,12 @@
 #!/bin/bash -e
 
+kubectl="kubectl --context=$HUB_DOMAIN_NAME -n $NAMESPACE"
+
 files download-tar \
     "https://codeload.github.com/SeldonIO/seldon-core/tar.gz/${HELM_CHART_VERSION}" \
     "$(pwd)/.kustomize" \
     --tar-subpath "operator/config"
 
-kubectl="kubectl --context=$HUB_DOMAIN_NAME"
 $kubectl apply --validate=ignore -k ".kustomize/crd"
 cat << EOF | $kubectl apply -f -
 apiVersion: networking.istio.io/v1alpha3
@@ -22,3 +23,15 @@ spec:
       number: 80
       protocol: HTTP
 EOF
+
+# if ! $kubectl get secret "seldon-webhook-server-cert" > /dev/null; then
+#     echo "Generating self-signed certifiate"
+#     mkdir -p ".tls"
+#     bin/self-signed-ca.sh \
+#         --namespace "$NAMESPACE" \
+#         --service "seldon-webhook-service" \
+#         --output-dir ".tls"
+#     $kubectl create secret tls "seldon-webhook-server-cert" \
+#       --cert=.tls/tls.crt \
+#       --key=.tls/tls.key
+# fi

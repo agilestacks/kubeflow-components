@@ -2,3 +2,4 @@
 
 kubectl="kubectl --context=$HUB_DOMAIN_NAME -n $NAMESPACE"
 $kubectl delete --ignore-not-found gateway "$COMPONENT_NAME"
+rm -rf ".tls"

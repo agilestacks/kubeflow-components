@@ -1,3 +1,5 @@
 /values.yaml
 /istio-gateway.yaml
 /.kustomize
+/.tls
+/.srl
