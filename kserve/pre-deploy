@@ -2,4 +2,3 @@
 
 files download "https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve.yaml" "core/kserve.yaml"
 files download "https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve-runtimes.yaml" "core/kserve-runtimes.yaml"
-files download-tar "$KSERVE_WEB_APP_KUSTOMIZE_TARBALL" "webapp" --tar-subpath "config"

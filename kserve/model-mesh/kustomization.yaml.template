@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+
+bases:
+- kustomize/default
+
+namespace: "${component.kserve.modelmesh.namespace}"
+
+patchesJson6902:
+- target:
+    version: v1
+    kind: Secret
+    name: storage-config
+  patch: |-
+    - op: replace
+      path: /stringData/localMinIO
+      value: |-
+        {
+          "type": "s3",
+          "access_key_id": "${component.bucket.accessKey}",
+          "secret_access_key": "${component.bucket.secretKey}",
+          "endpoint_url": "${component.bucket.endpoint}",
+          "default_bucket": "${component.bucket.name}",
+          "region": "${component.bucket.region}"
+        }
+- target:
+    version: v1
+    kind: Secret
+    name: modelmesh-serving
+  patch: |-
+    - op: replace
+      path: /stringData/etcd_connection
+      value: |
+        {
+          "endpoints": "${component.etcd.endpoint}",
+          "root_prefix": "modelmesh-serving"
+        }

@@ -5,22 +5,41 @@ requires:
   - kubernetes
 
 parameters:
-- name: component.kserve.version
-  value: v0.8.0
-  env: KSERVE_VERSION
-- name: component.kserve.webapp.version
-  value: master
-- name: component.kserve.webapp.kustomize.tarball
-  value: https://codeload.github.com/kserve/models-web-app/tar.gz/${component.kserve.webapp.version}
-  env: KSERVE_WEB_APP_KUSTOMIZE_TARBALL
-
+- name: dns.domain
+- name: component.kubeflow.namespace
+  value: kubeflow
+- name: component.kserve
+  parameters:
+    - name: modelmesh.namespace
+      value: kserve
+      env: KSERVE_MODEL_MESH
+    - name: .version
+      value: v0.8.0
+      env: KSERVE_VERSION
+    - name: webapp.version
+      value: master
+    - name: webapp.kustomize.tarball
+      value: https://codeload.github.com/kserve/models-web-app/tar.gz/${component.kserve.webapp.version}
+      env: KSERVE_WEB_APP_KUSTOMIZE_TARBALL
+    - name: modelmesh.kustomize.tarball
+      value: https://codeload.github.com/kserve/modelmesh-serving/tar.gz/${component.kserve.version}
+      env: KSERVE_MODEL_MESH_KUSTOMIZE_TARBALL
+- name: component.etcd.endpoint
+  value: http://etcd:2379
 - name: component.bucket
   parameters:
-  # - name: host
-  # - name: port
-  # - name: region
+  - name: endpoint
+    value: http://minio.kubeflow-data.svc:9000
+  - name: region
+    value: us-east-1
   - name: accessKey
     empty: allow
   - name: secretKey
     empty: allow
-  # - name: name
+  - name: name
+    value: mlpipelines
+
+templates:
+  files:
+  - 'model-mesh/*.template'
+  - 'web-app/*.template'

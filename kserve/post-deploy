@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+verb="$(basename "$0" | cut -d- -f2)"
+export HUB_KUSTOMIZE_TARBALL_SUBPATH="config"
+(
+  cd "web-app"
+  HUB_KUSTOMIZE_TARBALL_URL="$KSERVE_WEB_APP_KUSTOMIZE_TARBALL" \
+  hub ext component kustomize "$verb"
+) &
+pid1=$!
+
+(
+  cd "model-mesh"
+  NAMESPACE="${KSERVE_MODEL_MESH_NAMESPACE:-kserve}" \
+  HUB_KUSTOMIZE_TARBALL_URL="$KSERVE_MODEL_MESH_KUSTOMIZE_TARBALL" \
+  hub ext component kustomize "$verb"
+) &
+pid2=$!
+
+wait $pid1 $pid2

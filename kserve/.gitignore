@@ -1,2 +1,4 @@
 /core
-/webapp
+kustomize
+/modelmesh/kustomization.yaml
+/webapp/kustomization.yaml

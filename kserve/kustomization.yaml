@@ -3,21 +3,6 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
-bases:
-- webapp/overlays/kubeflow
-
 resources:
 - core/kserve.yaml
-
-patchesJson6902:
-- target:
-    version: v1
-    kind: ConfigMap
-    name: inferenceservice-config
-  patch: |-
-    - op: replace
-      path: /data/deploy
-      value: |-
-        {
-          "defaultDeploymentMode": "RawDeployment"
-        }
+- core/kserve-runtimes.yaml

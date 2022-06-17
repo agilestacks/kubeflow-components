@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+
+namespace: "${component.kubeflow.namespace}"
+
+bases:
+- kustomize/overlays/kubeflow
+
+patchesJson6902:
+- target:
+    version: v1
+    kind: ConfigMap
+    name: inferenceservice-config
+  patch: |-
+    - op: replace
+      path: /data/deploy
+      value: |-
+        {
+          "defaultDeploymentMode": "RawDeployment"
+        }
+    - op: replace
+      path: /data/ingress
+      value: |-
+        {
+          "ingressGateway" : "knative-serving/knative-ingress-gateway",
+          "ingressService" : "istio-ingressgateway.istio-system.svc.cluster.local",
+          "localGateway" : "knative-serving/knative-local-gateway",
+          "localGatewayService" : "knative-local-gateway.istio-system.svc.cluster.local",
+          "ingressDomain"  : "${dns.domain}"
+        }
