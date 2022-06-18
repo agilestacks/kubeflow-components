@@ -1,0 +1,25 @@
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.kubeflow
+  parameters:
+    - name: version
+      value: v1.5.1
+      env: VERSION
+    - name: volumes.kustomize.tarball
+      value: "https://codeload.github.com/kubeflow/manifests/tar.gz/${component.kubeflow.version}"
+      env: HUB_KUSTOMIZE_TARBALL_URL      
+    - name: volumes.kustomize.subpath
+      value: apps/training-operator/upstream
+      env: HUB_KUSTOMIZE_TARBALL_SUBPATH      
+# - name: component.istio
+#   parameters:
+#   - name: namespace
+#   - name: ingressGateway
+# - name: hub.backup.file
+#   empty: allow
+#   env: BACKUP_FILE
