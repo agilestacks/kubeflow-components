@@ -16,14 +16,6 @@ parameters:
     - name: .version
       value: v0.8.0
       env: KSERVE_VERSION
-    - name: webapp.version
-      value: master
-    - name: webapp.kustomize.tarball
-      value: https://codeload.github.com/kserve/models-web-app/tar.gz/${component.kserve.webapp.version}
-      env: KSERVE_WEB_APP_KUSTOMIZE_TARBALL
-    - name: modelmesh.kustomize.tarball
-      value: https://codeload.github.com/kserve/modelmesh-serving/tar.gz/${component.kserve.version}
-      env: KSERVE_MODEL_MESH_KUSTOMIZE_TARBALL
 - name: component.etcd.endpoint
   value: http://etcd:2379
 - name: component.bucket
@@ -41,5 +33,6 @@ parameters:
 
 templates:
   files:
+  - '*.template'
   - 'model-mesh/*.template'
   - 'web-app/*.template'

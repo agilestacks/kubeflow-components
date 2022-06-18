@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 files download "https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve.yaml" "core/kserve.yaml"
 files download "https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve-runtimes.yaml" "core/kserve-runtimes.yaml"
+files download "https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve_kubeflow.yaml" "core/kserve_kubeflow.yaml"

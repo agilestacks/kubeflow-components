@@ -1,4 +1,6 @@
 /core
 kustomize
+/kustomization.yaml
 /modelmesh/kustomization.yaml
 /webapp/kustomization.yaml
+/web-app/kustomization.yaml

@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+
+namespace: "kubeflow"
+
+bases:
+- kustomize
+
+images:
+- name: kfserving/models-web-app
+  newTag: latest
+
+configMapGenerator:
+  - name: kfserving-models-web-app-config
+    behavior: merge
+    literals:
+    - USERID_HEADER=kubeflow-userid
+    - APP_DISABLE_AUTH="False"
+
+patchesJson6902:
+- target:
+    group: rbac.authorization.k8s.io
+    version: v1
+    kind: ClusterRole
+    name: kfserving-models-web-app-cluster-role
+  patch: |-
+    - op: add
+      path: /rules/0
+      value:
+        apiGroups: [serving.kserve.io]
+        resources: [inferenceservices, inferenceservices/status]
+        verbs: [get, list, watch, create, delete, patch, update, deletecollection]
+- target:
+    group: networking.istio.io
+    version: v1beta1
+    kind: VirtualService
+    name: kfserving-models-web-app
+  patch: |-
+    - op: replace
+      path: /spec/gateways
+      value: [kubeflow-gateway]
+    - op: replace
+      path: /spec/http/0/route/0/destination/host
+      value: kfserving-models-web-app.kubeflow.svc.cluster.local

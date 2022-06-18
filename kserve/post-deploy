@@ -4,17 +4,26 @@ verb="$(basename "$0" | cut -d- -f2)"
 export HUB_KUSTOMIZE_TARBALL_SUBPATH="config"
 (
   cd "web-app"
-  HUB_KUSTOMIZE_TARBALL_URL="$KSERVE_WEB_APP_KUSTOMIZE_TARBALL" \
+  HUB_KUSTOMIZE_TARBALL_URL="https://codeload.github.com/kserve/models-web-app/tar.gz/master" \
+  HUB_KUSTOMIZE_TARBALL_SUBPATH="config" \
   hub ext component kustomize "$verb"
 ) &
 pid1=$!
 
+# (
+#   cd "web-app2"
+#   HUB_KUSTOMIZE_TARBALL_URL="https://codeload.github.com/kubeflow/manifests/tar.gz/v1.5.1" \
+#   HUB_KUSTOMIZE_TARBALL_SUBPATH="apps/kfserving/upstream/web-app" \
+#   hub ext component kustomize "$verb"
+# ) &
+# pid2=$!
+
 (
   cd "model-mesh"
   NAMESPACE="${KSERVE_MODEL_MESH_NAMESPACE:-kserve}" \
-  HUB_KUSTOMIZE_TARBALL_URL="$KSERVE_MODEL_MESH_KUSTOMIZE_TARBALL" \
+  HUB_KUSTOMIZE_TARBALL_URL="https://codeload.github.com/kserve/modelmesh-serving/tar.gz/$KSERVE_VERSION" \
   hub ext component kustomize "$verb"
 ) &
-pid2=$!
+pid3=$!
 
-wait $pid1 $pid2
+wait $pid1 $pid2 $pid3

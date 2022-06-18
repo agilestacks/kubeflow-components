@@ -8,25 +8,23 @@ namespace: "${component.kubeflow.namespace}"
 bases:
 - kustomize/overlays/kubeflow
 
+images:
+- name: kserve/models-web-app
+  newName: gcr.io/superhub/kserve/models-web-app
+  newTag: latest
+
+configMapGenerator:
+- name: kserve-models-web-app-config
+  behavior: merge
+  literals:
+  - USERID_HEADER=kubeflow-userid
+  - APP_DISABLE_AUTH="True"
+
 patchesJson6902:
 - target:
-    version: v1
-    kind: ConfigMap
-    name: inferenceservice-config
-  patch: |-
-    - op: replace
-      path: /data/deploy
-      value: |-
-        {
-          "defaultDeploymentMode": "RawDeployment"
-        }
-    - op: replace
-      path: /data/ingress
-      value: |-
-        {
-          "ingressGateway" : "knative-serving/knative-ingress-gateway",
-          "ingressService" : "istio-ingressgateway.istio-system.svc.cluster.local",
-          "localGateway" : "knative-serving/knative-local-gateway",
-          "localGatewayService" : "knative-local-gateway.istio-system.svc.cluster.local",
-          "ingressDomain"  : "${dns.domain}"
-        }
+    group: networking.istio.io
+    version: v1beta1
+    kind: VirtualService
+    name: kserve-models-web-app
+    namespace: kserve
+  path: kustomize/overlays/kubeflow/patches/web-app-vsvc.yaml

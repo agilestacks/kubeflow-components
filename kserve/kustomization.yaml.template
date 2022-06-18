@@ -3,10 +3,10 @@ kind: Kustomization
 generatorOptions:
   disableNameSuffixHash: true
 
-namespace: "kubeflow"
-
-bases:
-- kustomize/overlays/kubeflow
+resources:
+- core/kserve.yaml
+- core/kserve-runtimes.yaml
+# - core/kserve_kubeflow.yaml
 
 patchesJson6902:
 - target:
@@ -28,5 +28,5 @@ patchesJson6902:
           "ingressService" : "istio-ingressgateway.istio-system.svc.cluster.local",
           "localGateway" : "knative-serving/knative-local-gateway",
           "localGatewayService" : "knative-local-gateway.istio-system.svc.cluster.local",
-          "ingressDomain"  : "extra-small-choma-594.epam.devops.delivery"
+          "ingressDomain"  : "${dns.domain}"
         }
