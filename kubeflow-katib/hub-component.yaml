@@ -1,0 +1,38 @@
+---
+version: 1
+kind: component
+
+requires:
+  - kubernetes
+
+parameters:
+- name: component.kubeflow
+  parameters:
+    - name: name
+    - name: namespace
+      env: NAMESPACE
+    - name: version
+      # value: master
+      value: "v1.5.0"
+      env: VERSION
+    - name: tarball
+      value: "https://github.com/kubeflow/manifests/archive/${component.kubeflow.version}.tar.gz"
+      env: HUB_KUSTOMIZE_TARBALL_URL
+    - name: tarball.subpath
+      value: "apps/katib/upstream"
+      env: HUB_KUSTOMIZE_TARBALL_SUBPATH
+
+- name: component.mysql
+  parameters:
+  - name: host
+  - name: user
+  - name: port
+  - name: password
+  - name: database
+
+templates:
+  files:
+  # - "envs/*.template"
+  # - "resources/*.template"
+  # - "patches/*.template"
+  - "*.template"
